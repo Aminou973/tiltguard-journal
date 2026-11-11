@@ -53,6 +53,10 @@ pnpm dev                 # http://localhost:3000
 
 Tests: `pnpm test` and `pnpm typecheck`.
 
+## Privacy
+
+Your journal is a local SQLite database (`./data`). Nothing is sent anywhere by default: Next.js telemetry is turned off in `start.cmd`, `start.sh`, `docker-compose.yml` and the `Dockerfile`. The app only contacts a broker, market-data or AI provider if you connect one in Settings.
+
 ## Configuration
 
 Copy `.env.example` to `.env` (gitignored). Everything is optional:

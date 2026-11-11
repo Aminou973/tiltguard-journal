@@ -11,4 +11,5 @@ services:
       # Optional: stable encryption secret for broker credentials at rest
       # JOURNAL_SECRET: change-me-too
       JOURNAL_DATA_DIR: /data
+      NEXT_TELEMETRY_DISABLED: "1"
     restart: unless-stopped

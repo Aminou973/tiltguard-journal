@@ -1,5 +1,6 @@
 # Self-hosted trade journal — single container, SQLite on a volume.
 FROM node:22-slim AS builder
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN corepack enable
 WORKDIR /repo
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
@@ -11,6 +12,7 @@ COPY tsconfig.base.json ./
 RUN pnpm --filter web build
 
 FROM node:22-slim AS runner
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV JOURNAL_DATA_DIR=/data
 WORKDIR /app
