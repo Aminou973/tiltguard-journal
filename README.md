@@ -10,8 +10,13 @@ It is not affiliated with or endorsed by LuxAlgo Global, LLC. The upstream docum
 > **Disclaimer:** Not financial advice. This project is for educational purposes only, provided as is,
 > with no warranty. You are responsible for your own trading decisions.
 
-![screenshot](docs/screenshot.png)
-<!-- TODO: add a screenshot at docs/screenshot.png (use demo data, not your real account) -->
+![Dashboard with demo data](docs/screenshot.png)
+
+| Calendar                                  | Reports                                 |
+| ----------------------------------------- | --------------------------------------- |
+| ![Calendar](docs/screenshot-calendar.png) | ![Reports](docs/screenshot-reports.png) |
+
+_Screenshots use the built-in generated demo data, not a real account._
 
 ## What this fork adds
 
@@ -22,14 +27,27 @@ It is not affiliated with or endorsed by LuxAlgo Global, LLC. The upstream docum
 
 ## Install and run
 
-Requires Node.js 22+ and pnpm 9+.
+### Easiest: one click
+
+1. Install [Node.js 22+](https://nodejs.org/).
+2. [Download the ZIP](https://github.com/Aminou973/tiltguard-journal/archive/refs/heads/main.zip) and unzip it.
+3. Double-click **`start.cmd`** (Windows) or run **`./start.sh`** (macOS / Linux).
+
+The first run installs and builds (a few minutes), then opens http://localhost:3000. Later runs start in seconds.
+To try it with sample trades, use **Load demo data** on the dashboard.
+
+### Docker
+
+```bash
+docker compose up -d     # http://localhost:3000, data in ./data
+```
+
+### For developers
 
 ```bash
 pnpm install
-pnpm dev          # http://localhost:3000
+pnpm dev                 # http://localhost:3000
 ```
-
-Production: `pnpm build && pnpm start`, or `docker compose up -d` (see `Dockerfile` / `docker-compose.yml`).
 
 Tests: `pnpm test` and `pnpm typecheck`.
 
