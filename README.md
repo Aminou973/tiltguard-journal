@@ -1,6 +1,6 @@
 # TiltGuard Journal
 
-**Website:** https://aminou973.github.io/tiltguard/ · Free and open source, brought to you by [RangeProb](https://rangeprob.com/).
+**Website:** https://aminou973.github.io/tiltguard/ · Free and open source, brought to you by Minoux for the [RangeProb](https://rangeprob.com/) community.
 
 A self-hosted trading journal for futures day traders: broker and platform imports, P&L calendar, analytics,
 prop-firm tracking, daily journal and AI recaps. Your data stays in a local SQLite database.
