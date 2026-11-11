@@ -15,6 +15,7 @@ import {
   ListOrdered,
   NotebookPen,
   Settings,
+  ShieldCheck,
   ListChecks,
   BookmarkPlus,
   Wallet,
@@ -25,12 +26,13 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { LuxAlgoMark } from "@/components/luxalgo-mark";
+import { BRAND, BrandMark } from "@/components/brand-mark";
 import { PrivacyToggle } from "./privacy";
 import { ThemeToggle } from "./theme";
 import { PageTransition } from "./page-transition";
 import { Button } from "./ui/button";
 import { HoverHint } from "./ui/tooltip";
+import { IS_DEMO } from "@/lib/base-path";
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -46,6 +48,8 @@ const NAV = [
 ] as const;
 
 const NAV_SETUP = [
+  // Tiltguard lockout (separate app served at /guard/ on the same host; not part of the demo journal)
+  ...(IS_DEMO ? [] : [{ href: "/guard/", label: "Tilt guard", icon: ShieldCheck }]),
   { href: "/import", label: "Import", icon: Import },
   { href: "/accounts", label: "Accounts", icon: Wallet },
   { href: "/settings", label: "Settings", icon: Settings },
@@ -66,9 +70,11 @@ function NavLink({
   active: boolean;
   collapsed?: boolean;
 }) {
+  // /guard/ (TiltGuard) is another app: plain anchor, no client-side routing
+  const Anchor: React.ElementType = /^(\/(guard)\/|https?:)/.test(href) ? "a" : Link;
   return (
     <HoverHint content={collapsed ? label : null} side="right">
-      <Link
+      <Anchor
         href={href}
         aria-current={active ? "page" : undefined}
         className={cn(
@@ -80,7 +86,7 @@ function NavLink({
       >
         <Icon className={cn("h-4 w-4", active && "text-brand")} />
         <span className="journal-sidebar-label">{label}</span>
-      </Link>
+      </Anchor>
     </HoverHint>
   );
 }
@@ -157,18 +163,26 @@ export function Shell({ children }: { children: React.ReactNode }) {
       {NAV.map(({ href, label, icon }) => (
         <NavLink
           key={href}
-          href={href === "/prop-firms" ? href : filterQuery.size ? `${href}?${filterQuery}` : href}
+          href={
+            href === "/prop-firms" || href.startsWith("http")
+              ? href
+              : filterQuery.size
+                ? `${href}?${filterQuery}`
+                : href
+          }
           label={label}
           icon={icon}
           collapsed={collapsed}
-          active={href === "/" ? pathname === "/" : pathname.startsWith(href)}
+          active={
+            href === "/" ? pathname === "/" : !href.startsWith("http") && pathname.startsWith(href)
+          }
         />
       ))}
       <div className="!my-3 border-t" />
       {NAV_SETUP.map(({ href, label, icon }) => (
         <NavLink
           key={href}
-          href={filterQuery.size ? `${href}?${filterQuery}` : href}
+          href={filterQuery.size && !href.startsWith("/guard") ? `${href}?${filterQuery}` : href}
           label={label}
           icon={icon}
           collapsed={collapsed}
@@ -180,14 +194,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const footer = (
     <div className="journal-sidebar-footer space-y-1 border-t p-3 text-xs text-muted-foreground">
       <div>
-        Open source ·{" "}
+        Built on LuxAlgo&apos;s open-source{" "}
         <a
           href="https://github.com/LuxAlgo/trade-journal"
           className="underline underline-offset-2 hover:text-foreground"
           target="_blank"
           rel="noreferrer"
         >
-          GitHub
+          Trade Journal
         </a>
       </div>
       <div>Not investment advice.</div>
@@ -214,9 +228,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
               aria-describedby={undefined}
             >
               <div className="flex h-14 shrink-0 items-center gap-2.5 border-b px-4">
-                <LuxAlgoMark className="h-[18px] w-5" />
+                <BrandMark className="h-[18px] w-5" />
                 <DialogPrimitive.Title className="text-sm font-semibold">
-                  Trade Journal
+                  {BRAND}
                 </DialogPrimitive.Title>
                 <DialogPrimitive.Close asChild>
                   <Button
@@ -241,8 +255,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
           href="/"
           className="mr-auto flex min-w-0 items-center gap-2 text-sm font-semibold tracking-tight"
         >
-          <LuxAlgoMark className="hidden h-4 w-[18px] shrink-0 min-[380px]:block" />
-          <span className="truncate">Trade Journal</span>
+          <BrandMark className="hidden h-4 w-[18px] shrink-0 min-[380px]:block" />
+          <span className="truncate">{BRAND}</span>
         </Link>
         <PrivacyToggle compact />
         <ThemeToggle iconOnly />
@@ -254,9 +268,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
       >
         <div className="journal-sidebar-header relative flex h-14 shrink-0 items-center border-b">
           <Link href="/" className="journal-sidebar-home flex h-full min-w-0 items-center gap-2.5">
-            <LuxAlgoMark className="h-[18px] w-5 shrink-0" />
+            <BrandMark className="h-[18px] w-5 shrink-0" />
             <span className="journal-sidebar-brand-label text-sm font-semibold tracking-tight">
-              Trade Journal
+              {BRAND}
             </span>
           </Link>
           <Button
@@ -286,7 +300,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
         {footer}
       </aside>
-      <PageTransition>{children}</PageTransition>
+      <PageTransition>
+        {IS_DEMO && (
+          <div className="mx-4 mt-4 flex flex-wrap items-center justify-between gap-2 rounded-md border bg-accent/40 px-3 py-2 text-sm md:mx-6">
+            <span>
+              <b>Demo journal</b> · sample trades, read-only.
+            </span>
+          </div>
+        )}
+        {children}
+      </PageTransition>
     </div>
   );
 }

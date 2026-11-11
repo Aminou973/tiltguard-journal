@@ -25,3 +25,6 @@ data/
 .DS_Store
 *.log
 coverage/
+
+# local tooling
+.omc/

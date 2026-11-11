@@ -19,6 +19,16 @@ export interface ProviderInfo {
 }
 export const MARKET_PROVIDERS: ProviderInfo[] = [
   {
+    id: "tiltguard",
+    name: "TiltGuard bars (NQ / ES)",
+    mode: "public",
+    description:
+      "CME NQ and ES 1-minute candles served by a local TiltGuard backend (TILTGUARD_BARS_URL, default http://127.0.0.1:8940). Micro contracts use the same prices: MNQ = NQ, MES = ES.",
+    symbolHint: "Use NQ, MNQ, ES or MES (a dated contract such as MNQZ6 works too).",
+    fields: [],
+    resolutions: ["1m", "5m", "15m", "1h"],
+  },
+  {
     id: "london-strategic-edge",
     name: "London Strategic Edge",
     mode: "credentials",

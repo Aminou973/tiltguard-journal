@@ -6,11 +6,11 @@ import { PrivacyProvider } from "@/components/privacy";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
+import { BASE_FETCH_SHIM } from "@/lib/base-path";
 
 export const metadata: Metadata = {
-  title: "Trade Journal",
-  description:
-    "The open-source trade journal — broker sync, deep analytics, daily journaling, and AI-native reflection. Self-hosted, free forever.",
+  title: "TiltGuard Journal",
+  description: "A self-hosted trade journal: imports, analytics, daily reviews and playbooks.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        {BASE_FETCH_SHIM && <script dangerouslySetInnerHTML={{ __html: BASE_FETCH_SHIM }} />}
       </head>
       <body className="min-h-screen font-sans antialiased">
         <TooltipProvider delayDuration={350} skipDelayDuration={150}>

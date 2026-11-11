@@ -27,6 +27,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Loading from "@/app/loading";
 import { postJson, useApi } from "@/lib/use-api";
 import { cn, fmtDuration, fmtMoney, fmtNumber, fmtPercent } from "@/lib/utils";
+import { withBase } from "@/lib/base-path";
 
 interface TradeRow {
   key: string;
@@ -289,7 +290,7 @@ function Trades() {
         title="Trades"
         actions={
           <div className="flex items-center gap-2">
-            <a href={`/api/export?format=csv&${query}`} download>
+            <a href={withBase(`/api/export?format=csv&${query}`)} download>
               <Button variant="outline" size="sm">
                 <Download />
                 CSV

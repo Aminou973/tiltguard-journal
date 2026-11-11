@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Paperclip, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { postJson, useApi } from "@/lib/use-api";
+import { withBase } from "@/lib/base-path";
 export function Attachments({
   type,
   id,
@@ -72,14 +73,14 @@ export function Attachments({
           <div key={a.id} className="min-w-0 rounded-md border p-2">
             <HoverHint content={a.name}>
               <a
-                href={`/api/attachments/${a.id}`}
+                href={withBase(`/api/attachments/${a.id}`)}
                 target="_blank"
                 rel="noreferrer"
                 className="block"
               >
                 {a.mime.startsWith("image/") && (
                   <img
-                    src={`/api/attachments/${a.id}`}
+                    src={withBase(`/api/attachments/${a.id}`)}
                     alt={a.name}
                     className="mb-2 h-28 w-full rounded object-contain"
                   />
